@@ -61,7 +61,9 @@ fun ServiceDetailScreen(serviceId: Int, onBack: () -> Unit, onBook: () -> Unit) 
                     model = service.imageUrl,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    placeholder = androidx.compose.ui.res.painterResource(id = android.R.drawable.ic_menu_gallery),
+                    error = androidx.compose.ui.res.painterResource(id = android.R.drawable.ic_menu_report_image)
                 )
                 
                 // Gradient Overlay for visibility

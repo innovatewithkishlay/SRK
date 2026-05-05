@@ -245,7 +245,9 @@ fun PopularServiceCard(service: Service, onClick: () -> Unit) {
                     .fillMaxWidth()
                     .height(120.dp)
                     .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
-                contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                placeholder = androidx.compose.ui.res.painterResource(id = android.R.drawable.ic_menu_gallery),
+                error = androidx.compose.ui.res.painterResource(id = android.R.drawable.ic_menu_report_image)
             )
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(text = service.name, fontWeight = FontWeight.Bold, maxLines = 1)
