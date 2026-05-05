@@ -56,7 +56,7 @@ fun ProfileScreen(onLogout: () -> Unit) {
         }
         
         Text(text = "Raj", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 16.dp))
-        Text(text = "raj@example.com", color = Color.Gray)
+        Text(text = "raj@gmail.com", color = Color.Gray)
         
         Spacer(modifier = Modifier.height(32.dp))
         
