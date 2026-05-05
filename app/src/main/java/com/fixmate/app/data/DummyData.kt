@@ -45,7 +45,7 @@ object DummyData {
     )
     
     val bookings = listOf(
-        Booking(1, "Deep House Cleaning", "John Doe", "2024-05-10", "10:00 AM", "Completed", "$50"),
+        Booking(1, "Deep House Cleaning", "Raj", "2024-05-10", "10:00 AM", "Completed", "$50"),
         Booking(2, "Kitchen Pipe Repair", "Mike Smith", "2024-05-12", "02:00 PM", "Pending", "$40")
     )
     
