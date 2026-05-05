@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fixmate.app.data.DummyData
@@ -85,7 +86,46 @@ fun ProviderHeader(onLogout: () -> Unit) {
         StatCard("Earnings", "$1,200", Modifier.weight(1f))
         StatCard("Rating", "4.9", Modifier.weight(1f))
     }
-    Spacer(modifier = Modifier.height(16.dp))
+    
+    Spacer(modifier = Modifier.height(24.dp))
+    
+    // Analytics Section
+    Text(text = "Weekly Analytics", modifier = Modifier.padding(horizontal = 16.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    CustomCard(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text("Revenue over the last 7 days", fontSize = 12.sp, color = Color.Gray)
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Custom Bar Chart
+            Row(
+                modifier = Modifier.fillMaxWidth().height(120.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                val data = listOf(40f, 60f, 30f, 80f, 50f, 90f, 70f)
+                data.forEach { height ->
+                    Box(
+                        modifier = Modifier
+                            .width(16.dp)
+                            .fillMaxHeight(height / 100f)
+                            .clip(MaterialTheme.shapes.extraSmall)
+                            .background(MaterialTheme.colorScheme.primary)
+                    )
+                }
+            }
+            
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                listOf("M", "T", "W", "T", "F", "S", "S").forEach { day ->
+                    Text(day, fontSize = 10.sp, color = Color.Gray, modifier = Modifier.width(16.dp), textAlign = TextAlign.Center)
+                }
+            }
+        }
+    }
+    
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable

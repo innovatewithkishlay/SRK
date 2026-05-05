@@ -7,7 +7,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.fixmate.app.ui.screens.*
+import com.fixmate.app.ui.screens.OnboardingScreen
+import com.fixmate.app.ui.screens.SplashScreen
 import com.fixmate.app.ui.screens.admin.AdminDashboardScreen
 import com.fixmate.app.ui.screens.provider.ProviderDashboardScreen
 import com.fixmate.app.ui.screens.user.BookingScreen
@@ -33,8 +34,16 @@ fun FixMateNavGraph(
     ) {
         composable(Screen.Splash.route) {
             SplashScreen(onTimeout = {
-                navController.navigate(Screen.RoleSelection.route) {
+                navController.navigate(Screen.Onboarding.route) {
                     popUpTo(Screen.Splash.route) { inclusive = true }
+                }
+            })
+        }
+        
+        composable(Screen.Onboarding.route) {
+            OnboardingScreen(onFinished = {
+                navController.navigate(Screen.RoleSelection.route) {
+                    popUpTo(Screen.Onboarding.route) { inclusive = true }
                 }
             })
         }
