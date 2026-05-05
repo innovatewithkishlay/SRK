@@ -2,6 +2,15 @@
 
 FixMate is a comprehensive, UI-based Android application built using **Kotlin** and **Jetpack Compose**. It serves as a bridge between homeowners and professional service providers (plumbers, electricians, cleaners, etc.), featuring a robust multi-role architecture.
 
+---
+
+## 🎯 Problem Statement
+Finding reliable, verified home service providers (plumbers, electricians, etc.) is often a fragmented and frustrating process for homeowners. Simultaneously, skilled professionals lack a centralized platform to manage their jobs and growth efficiently. 
+
+**FixMate** solves this by providing a unified, multi-role ecosystem that connects users with trusted experts through a seamless, mobile-first experience, complete with booking management, analytics, and real-time communication.
+
+---
+
 The project is designed to showcase core Android development concepts, strictly following a standard academic syllabus (Units I-VI).
 
 ---

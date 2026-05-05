@@ -4,16 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fixmate.app.data.DummyData
@@ -54,19 +55,34 @@ fun ServiceDetailScreen(serviceId: Int, onBack: () -> Unit, onBook: () -> Unit) 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
+                    .height(300.dp)
             ) {
-                Icon(service.icon, contentDescription = null, modifier = Modifier.size(100.dp), tint = MaterialTheme.colorScheme.primary)
+                AsyncImage(
+                    model = service.imageUrl,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+                
+                // Gradient Overlay for visibility
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Black.copy(alpha = 0.4f), Color.Transparent, Color.Transparent, Color.Black.copy(alpha = 0.4f))
+                            )
+                        )
+                )
                 
                 IconButton(
                     onClick = onBack,
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(16.dp)
+                        .background(Color.White.copy(alpha = 0.7f), CircleShape)
                 ) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.Black)
                 }
                 
                 IconButton(
@@ -74,8 +90,9 @@ fun ServiceDetailScreen(serviceId: Int, onBack: () -> Unit, onBook: () -> Unit) 
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
+                        .background(Color.White.copy(alpha = 0.7f), CircleShape)
                 ) {
-                    Icon(Icons.Default.FavoriteBorder, contentDescription = "Favorite")
+                    Icon(Icons.Default.FavoriteBorder, contentDescription = "Favorite", tint = Color.Black)
                 }
             }
             
