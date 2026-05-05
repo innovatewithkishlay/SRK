@@ -4,6 +4,19 @@ sealed class Screen(val route: String) {
     object Splash : Screen("splash")
     object RoleSelection : Screen("role_selection")
     
+    // Auth Screens
+    object Login : Screen("login/{role}") {
+        fun createRoute(role: String) = "login/$role"
+    }
+    object Signup : Screen("signup/{role}") {
+        fun createRoute(role: String) = "signup/$role"
+    }
+    
+    // Navigation Graphs
+    object UserGraph : Screen("user_graph")
+    object ProviderGraph : Screen("provider_graph")
+    object AdminGraph : Screen("admin_graph")
+    
     // User Screens
     object UserHome : Screen("user_home")
     object ServiceList : Screen("service_list/{category}") {
@@ -22,8 +35,10 @@ sealed class Screen(val route: String) {
     // Provider Screens
     object ProviderDashboard : Screen("provider_dashboard")
     object ProviderJobs : Screen("provider_jobs")
+    object ProviderHistory : Screen("provider_history")
     
     // Admin Screens
     object AdminDashboard : Screen("admin_dashboard")
     object AdminManageUsers : Screen("admin_manage_users")
+    object AdminReports : Screen("admin_reports")
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,13 +27,13 @@ import kotlinx.coroutines.launch
  */
 
 @Composable
-fun ProviderDashboardScreen() {
+fun ProviderDashboardScreen(onLogout: () -> Unit) {
     val pagerState = rememberPagerState(pageCount = { 2 })
     val scope = rememberCoroutineScope()
     val tabs = listOf("Pending Jobs", "Completed Jobs")
 
     Column(modifier = Modifier.fillMaxSize()) {
-        ProviderHeader()
+        ProviderHeader(onLogout = onLogout)
         
         // UNIT VI: TabRow
         TabRow(
@@ -63,20 +64,28 @@ fun ProviderDashboardScreen() {
 }
 
 @Composable
-fun ProviderHeader() {
-    Column(
+fun ProviderHeader(onLogout: () -> Unit) {
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Hello, Provider!", fontSize = 24.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            StatCard("Total Jobs", "24", Modifier.weight(1f))
-            StatCard("Earnings", "$1,200", Modifier.weight(1f))
-            StatCard("Rating", "4.9", Modifier.weight(1f))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = "Hello, Mike!", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Pro Electrician", color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
+        }
+        IconButton(onClick = onLogout) {
+            Icon(Icons.Default.Logout, contentDescription = "Logout", tint = Color.Red)
         }
     }
+    
+    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        StatCard("Total Jobs", "24", Modifier.weight(1f))
+        StatCard("Earnings", "$1,200", Modifier.weight(1f))
+        StatCard("Rating", "4.9", Modifier.weight(1f))
+    }
+    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Composable
@@ -114,6 +123,13 @@ fun JobCard(job: JobRequest) {
                 Text(text = job.serviceType, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                 Text(text = job.time, fontSize = 12.sp, color = Color.Gray)
             }
+            
+            // Skill Tags
+            Row(modifier = Modifier.padding(vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                AssistChip(onClick = {}, label = { Text("Urgent") }, colors = AssistChipDefaults.assistChipColors(containerColor = Color(0xFFFFEBEE)))
+                AssistChip(onClick = {}, label = { Text("High Priority") })
+            }
+            
             Text(text = "Client: ${job.userName}", fontSize = 14.sp)
             Text(text = "Address: ${job.address}", fontSize = 14.sp)
             

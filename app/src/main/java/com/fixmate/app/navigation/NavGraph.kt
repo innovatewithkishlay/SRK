@@ -15,12 +15,16 @@ import com.fixmate.app.ui.screens.user.ServiceDetailScreen
 import com.fixmate.app.ui.screens.user.UserDashboardContainer
 import com.fixmate.app.ui.screens.user.UserHomeScreen
 
+import androidx.navigation.compose.navigation
+import com.fixmate.app.ui.screens.auth.LoginScreen
+
 @Composable
 fun FixMateNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     startDestination: String = Screen.Splash.route,
-    onRoleSaved: (String) -> Unit
+    onRoleSaved: (String) -> Unit,
+    onLogout: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -37,55 +41,89 @@ fun FixMateNavGraph(
         
         composable(Screen.RoleSelection.route) {
             RoleSelectionScreen(onRoleSelected = { role ->
-                onRoleSaved(role)
-                when (role) {
-                    "User" -> navController.navigate(Screen.UserHome.route)
-                    "Provider" -> navController.navigate(Screen.ProviderDashboard.route)
-                    "Admin" -> navController.navigate(Screen.AdminDashboard.route)
-                }
+                navController.navigate(Screen.Login.createRoute(role))
             })
         }
         
-        // User Flow
-        composable(Screen.UserHome.route) {
-            UserDashboardContainer(
-                onServiceClick = { id -> navController.navigate(Screen.ServiceDetail.createRoute(id)) }
-            )
-        }
-        
         composable(
-            route = Screen.ServiceDetail.route,
-            arguments = listOf(navArgument("serviceId") { type = NavType.IntType })
+            route = Screen.Login.route,
+            arguments = listOf(navArgument("role") { type = NavType.StringType })
         ) { backStackEntry ->
-            val serviceId = backStackEntry.arguments?.getInt("serviceId") ?: 1
-            ServiceDetailScreen(
-                serviceId = serviceId,
-                onBack = { navController.popBackStack() },
-                onBook = { navController.navigate(Screen.Booking.createRoute(serviceId)) }
+            val role = backStackEntry.arguments?.getString("role") ?: "User"
+            LoginScreen(
+                role = role,
+                onLoginSuccess = {
+                    onRoleSaved(role)
+                    when (role) {
+                        "User" -> navController.navigate(Screen.UserGraph.route) {
+                            popUpTo(Screen.RoleSelection.route) { inclusive = true }
+                        }
+                        "Provider" -> navController.navigate(Screen.ProviderGraph.route) {
+                            popUpTo(Screen.RoleSelection.route) { inclusive = true }
+                        }
+                        "Admin" -> navController.navigate(Screen.AdminGraph.route) {
+                            popUpTo(Screen.RoleSelection.route) { inclusive = true }
+                        }
+                    }
+                },
+                onSignupClick = { /* demo */ }
             )
         }
         
-        composable(
-            route = Screen.Booking.route,
-            arguments = listOf(navArgument("serviceId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val serviceId = backStackEntry.arguments?.getInt("serviceId") ?: 1
-            BookingScreen(
-                serviceId = serviceId,
-                onBookingConfirmed = {
-                    navController.popBackStack()
-                }
-            )
+        // USER NESTED GRAPH
+        navigation(
+            startDestination = Screen.UserHome.route,
+            route = Screen.UserGraph.route
+        ) {
+            composable(Screen.UserHome.route) {
+                UserDashboardContainer(
+                    onServiceClick = { id -> navController.navigate(Screen.ServiceDetail.createRoute(id)) },
+                    onLogout = onLogout
+                )
+            }
+            composable(
+                route = Screen.ServiceDetail.route,
+                arguments = listOf(navArgument("serviceId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val serviceId = backStackEntry.arguments?.getInt("serviceId") ?: 1
+                ServiceDetailScreen(
+                    serviceId = serviceId,
+                    onBack = { navController.popBackStack() },
+                    onBook = { navController.navigate(Screen.Booking.createRoute(serviceId)) }
+                )
+            }
+            composable(
+                route = Screen.Booking.route,
+                arguments = listOf(navArgument("serviceId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val serviceId = backStackEntry.arguments?.getInt("serviceId") ?: 1
+                BookingScreen(
+                    serviceId = serviceId,
+                    onBookingConfirmed = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
         
-        // Provider Flow
-        composable(Screen.ProviderDashboard.route) {
-            ProviderDashboardScreen()
+        // PROVIDER NESTED GRAPH
+        navigation(
+            startDestination = Screen.ProviderDashboard.route,
+            route = Screen.ProviderGraph.route
+        ) {
+            composable(Screen.ProviderDashboard.route) {
+                ProviderDashboardScreen(onLogout = onLogout)
+            }
         }
         
-        // Admin Flow
-        composable(Screen.AdminDashboard.route) {
-            AdminDashboardScreen()
+        // ADMIN NESTED GRAPH
+        navigation(
+            startDestination = Screen.AdminDashboard.route,
+            route = Screen.AdminGraph.route
+        ) {
+            composable(Screen.AdminDashboard.route) {
+                AdminDashboardScreen(onLogout = onLogout)
+            }
         }
     }
 }

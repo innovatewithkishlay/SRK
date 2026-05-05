@@ -22,7 +22,7 @@ import com.fixmate.app.ui.components.CustomCard
  */
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(onLogout: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,13 +64,26 @@ fun ProfileScreen() {
         ProfileMenuItem(Icons.Default.CreditCard, "Payments")
         ProfileMenuItem(Icons.Default.Settings, "Settings")
         ProfileMenuItem(Icons.Default.Help, "Help & Support")
-        ProfileMenuItem(Icons.Default.Logout, "Logout", textColor = Color.Red)
+        ProfileMenuItem(
+            Icons.Default.Logout, 
+            "Logout", 
+            textColor = Color.Red,
+            onClick = onLogout
+        )
     }
 }
 
 @Composable
-fun ProfileMenuItem(icon: ImageVector, title: String, textColor: Color = Color.Unspecified) {
-    CustomCard(modifier = Modifier.padding(vertical = 4.dp)) {
+fun ProfileMenuItem(
+    icon: ImageVector, 
+    title: String, 
+    textColor: Color = Color.Unspecified,
+    onClick: () -> Unit = {}
+) {
+    CustomCard(
+        modifier = Modifier.padding(vertical = 4.dp),
+        onClick = onClick
+    ) {
         Row(
             modifier = Modifier
                 .padding(16.dp)

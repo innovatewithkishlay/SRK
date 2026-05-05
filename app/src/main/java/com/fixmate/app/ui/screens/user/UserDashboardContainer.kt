@@ -16,7 +16,8 @@ import com.fixmate.app.navigation.Screen
 
 @Composable
 fun UserDashboardContainer(
-    onServiceClick: (Int) -> Unit
+    onServiceClick: (Int) -> Unit,
+    onLogout: () -> Unit
 ) {
     val navController = rememberNavController()
     val items = listOf(
@@ -69,7 +70,7 @@ fun UserDashboardContainer(
                 ServiceListScreen(category = "Notifications", onServiceClick = {}, onBack = {})
             }
             composable(Screen.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(onLogout = onLogout)
             }
         }
     }

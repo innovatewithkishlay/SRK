@@ -48,6 +48,14 @@ class MainActivity : ComponentActivity() {
                                 // UNIT III: Schedule dummy reminder
                                 com.fixmate.app.utils.AlarmHelper.scheduleReminder(this@MainActivity)
                             }
+                        },
+                        onLogout = {
+                            scope.launch {
+                                dataStoreManager.saveRole("") // Clear role
+                                navController.navigate(Screen.RoleSelection.route) {
+                                    popUpTo(0) { inclusive = true }
+                                }
+                            }
                         }
                     )
                 }

@@ -14,7 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,13 +36,25 @@ fun UserHomeScreen(
     onCategoryClick: (String) -> Unit,
     onServiceClick: (Int) -> Unit
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    var showFilterSheet by remember { mutableStateOf(false) }
+
+    if (showFilterSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showFilterSheet = false },
+            sheetState = sheetState
+        ) {
+            FilterContent(onApply = { showFilterSheet = false })
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        // Top Bar Placeholder
-        HomeTopBar()
+        // Top Bar with Filter Button
+        HomeTopBar(onFilterClick = { showFilterSheet = true })
         
         // Banner
         PromotionBanner()
@@ -96,7 +108,7 @@ fun UserHomeScreen(
 }
 
 @Composable
-fun HomeTopBar() {
+fun HomeTopBar(onFilterClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,8 +122,50 @@ fun HomeTopBar() {
                 Text(text = "New York, USA", fontWeight = FontWeight.Bold)
             }
         }
+        IconButton(onClick = onFilterClick) {
+            Icon(Icons.Default.FilterList, contentDescription = "Filter")
+        }
         IconButton(onClick = {}) {
             Icon(Icons.Default.Notifications, contentDescription = null)
+        }
+    }
+}
+
+@Composable
+fun FilterContent(onApply: () -> Unit) {
+    Column(modifier = Modifier.padding(24.dp).padding(bottom = 32.dp)) {
+        Text("Filter Services", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        Text("Price Range", fontWeight = FontWeight.Medium)
+        var sliderPosition by remember { mutableStateOf(0f..100f) }
+        RangeSlider(
+            value = sliderPosition,
+            onValueChange = { sliderPosition = it },
+            valueRange = 0f..200f
+        )
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text("$${sliderPosition.start.toInt()}")
+            Text("$${sliderPosition.endInclusive.toInt()}")
+        }
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        Text("Rating", fontWeight = FontWeight.Medium)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            (1..5).forEach { rating ->
+                FilterChip(
+                    selected = rating == 4,
+                    onClick = { },
+                    label = { Text("$rating★") }
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        Button(onClick = onApply, modifier = Modifier.fillMaxWidth()) {
+            Text("Apply Filters")
         }
     }
 }
