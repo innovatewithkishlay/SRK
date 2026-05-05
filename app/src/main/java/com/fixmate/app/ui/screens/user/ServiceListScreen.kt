@@ -21,6 +21,7 @@ import com.fixmate.app.ui.components.CustomRatingBar
  * UNIT I: LazyColumn implementation
  */
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServiceListScreen(category: String, onServiceClick: (Int) -> Unit, onBack: () -> Unit) {
     val services = DummyData.services.filter { it.category == category }

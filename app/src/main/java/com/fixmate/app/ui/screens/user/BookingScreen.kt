@@ -23,6 +23,7 @@ import java.util.*
  * UNIT III: Date Picker and Time Picker Dialogs
  */
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookingScreen(serviceId: Int, onBookingConfirmed: () -> Unit) {
     val context = LocalContext.current

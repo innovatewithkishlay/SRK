@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
  * UNIT VI: Navigation Drawer implementation
  */
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminDashboardScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
