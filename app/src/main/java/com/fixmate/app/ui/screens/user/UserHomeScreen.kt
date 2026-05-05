@@ -106,7 +106,7 @@ fun HomeTopBar() {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = "Location", fontSize = 12.sp, color = Color.Gray)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.LocationOn, contentDescription = null, size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                Icon(Icons.Default.LocationOn, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                 Text(text = "New York, USA", fontWeight = FontWeight.Bold)
             }
         }
@@ -195,4 +195,3 @@ fun getCategoryIcon(name: String): ImageVector {
     }
 }
 
-fun Modifier.size(size: Int): Modifier = this.size(size.dp)
