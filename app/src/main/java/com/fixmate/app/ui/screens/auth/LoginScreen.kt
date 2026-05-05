@@ -19,6 +19,7 @@ import com.fixmate.app.ui.components.CustomTextField
 fun LoginScreen(role: String, onLoginSuccess: () -> Unit, onSignupClick: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -42,7 +43,10 @@ fun LoginScreen(role: String, onLoginSuccess: () -> Unit, onSignupClick: () -> U
         
         CustomTextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { 
+                email = it 
+                errorMessage = null
+            },
             label = "Email Address",
             leadingIcon = Icons.Default.Email
         )
@@ -51,13 +55,25 @@ fun LoginScreen(role: String, onLoginSuccess: () -> Unit, onSignupClick: () -> U
         
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { 
+                password = it 
+                errorMessage = null
+            },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
             leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
             visualTransformation = PasswordVisualTransformation()
         )
+
+        if (errorMessage != null) {
+            Text(
+                text = errorMessage!!,
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 8.dp).align(Alignment.Start)
+            )
+        }
         
         TextButton(
             onClick = { /* Forgot password */ },
@@ -70,7 +86,22 @@ fun LoginScreen(role: String, onLoginSuccess: () -> Unit, onSignupClick: () -> U
         
         CustomButton(
             text = "Login",
-            onClick = onLoginSuccess
+            onClick = {
+                if (role == "Admin") {
+                    if (email == "fixmate@fixmate.in" && password == "fixmate90") {
+                        onLoginSuccess()
+                    } else {
+                        errorMessage = "Invalid Admin Credentials"
+                    }
+                } else {
+                    // For User and Provider, any non-empty login works for demo
+                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                        onLoginSuccess()
+                    } else {
+                        errorMessage = "Please enter email and password"
+                    }
+                }
+            }
         )
         
         Row(
