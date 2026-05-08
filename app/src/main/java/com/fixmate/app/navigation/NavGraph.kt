@@ -12,6 +12,7 @@ import com.fixmate.app.ui.screens.SplashScreen
 import com.fixmate.app.ui.screens.admin.AdminDashboardScreen
 import com.fixmate.app.ui.screens.provider.ProviderDashboardScreen
 import com.fixmate.app.ui.screens.user.AIScanScreen
+import com.fixmate.app.ui.screens.user.EmergencySOSScreen
 import com.fixmate.app.ui.screens.user.BookingScreen
 import com.fixmate.app.ui.screens.user.ServiceDetailScreen
 import com.fixmate.app.ui.screens.user.UserDashboardContainer
@@ -88,8 +89,25 @@ fun FixMateNavGraph(
             composable(Screen.UserHome.route) {
                 UserDashboardContainer(
                     onServiceClick = { id -> navController.navigate(Screen.ServiceDetail.createRoute(id)) },
-                    onLogout = onLogout
+                    onLogout = onLogout,
+                    onScanClick = { navController.navigate(Screen.AIScan.route) },
+                    onSOSClick = { navController.navigate(Screen.EmergencySOS.route) }
                 )
+            }
+            
+            composable(Screen.AIScan.route) {
+                AIScanScreen(
+                    onBack = { navController.popBackStack() },
+                    onServiceDetected = { serviceId ->
+                        navController.navigate(Screen.ServiceDetail.createRoute(serviceId)) {
+                            popUpTo(Screen.AIScan.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            composable(Screen.EmergencySOS.route) {
+                EmergencySOSScreen(onBack = { navController.popBackStack() })
             }
             composable(
                 route = Screen.ServiceDetail.route,

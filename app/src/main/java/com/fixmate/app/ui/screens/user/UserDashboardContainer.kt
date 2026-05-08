@@ -17,7 +17,9 @@ import com.fixmate.app.navigation.Screen
 @Composable
 fun UserDashboardContainer(
     onServiceClick: (Int) -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onScanClick: () -> Unit,
+    onSOSClick: () -> Unit
 ) {
     val navController = rememberNavController()
     val items = listOf(
@@ -58,7 +60,9 @@ fun UserDashboardContainer(
             composable(Screen.UserHome.route) {
                 UserHomeScreen(
                     onCategoryClick = { /* demo */ onServiceClick(1) },
-                    onServiceClick = onServiceClick
+                    onServiceClick = onServiceClick,
+                    onScanClick = onScanClick,
+                    onSOSClick = onSOSClick
                 )
             }
             composable("bookings_list") {

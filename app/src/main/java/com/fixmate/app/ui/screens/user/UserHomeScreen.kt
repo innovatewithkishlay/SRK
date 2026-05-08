@@ -77,7 +77,7 @@ fun UserHomeScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
                 onClick = onScanClick
             ) {
@@ -95,6 +95,32 @@ fun UserHomeScreen(
                         tint = Color.White,
                         modifier = Modifier.size(32.dp)
                     )
+                }
+            }
+            
+            // Emergency SOS Banner
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFB91C1C)),
+                onClick = onSOSClick
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Default.Warning,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(32.dp)
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = "Emergency SOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        Text(text = "Gas leak? Water flood? Tap for instant expert response.", color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
+                    }
                 }
             }
             
