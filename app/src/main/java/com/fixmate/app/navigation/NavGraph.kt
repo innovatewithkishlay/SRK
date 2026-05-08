@@ -11,6 +11,7 @@ import com.fixmate.app.ui.screens.OnboardingScreen
 import com.fixmate.app.ui.screens.SplashScreen
 import com.fixmate.app.ui.screens.admin.AdminDashboardScreen
 import com.fixmate.app.ui.screens.provider.ProviderDashboardScreen
+import com.fixmate.app.ui.screens.user.AIScanScreen
 import com.fixmate.app.ui.screens.user.BookingScreen
 import com.fixmate.app.ui.screens.user.ServiceDetailScreen
 import com.fixmate.app.ui.screens.user.UserDashboardContainer

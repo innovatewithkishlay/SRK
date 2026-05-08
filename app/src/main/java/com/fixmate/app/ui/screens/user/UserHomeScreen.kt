@@ -35,7 +35,8 @@ import com.fixmate.app.ui.components.CustomRatingBar
 @Composable
 fun UserHomeScreen(
     onCategoryClick: (String) -> Unit,
-    onServiceClick: (Int) -> Unit
+    onServiceClick: (Int) -> Unit,
+    onScanClick: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
     var showFilterSheet by remember { mutableStateOf(false) }
@@ -71,6 +72,31 @@ fun UserHomeScreen(
         ) {
             // Top Bar with Filter Button
             HomeTopBar(onFilterClick = { showFilterSheet = true })
+            
+            // Fix-It AI Banner
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+                onClick = onScanClick
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = "Try Fix-It AI", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        Text(text = "Scan your home problem and get instant expert advice.", color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
+                    }
+                    Icon(
+                        Icons.Default.AutoAwesome,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+            }
             
             // Banner
             PromotionBanner()
