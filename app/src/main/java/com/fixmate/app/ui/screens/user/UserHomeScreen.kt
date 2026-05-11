@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.fixmate.app.data.DummyData
 import com.fixmate.app.data.Service
 import com.fixmate.app.ui.components.CustomCard
@@ -35,10 +36,12 @@ import com.fixmate.app.ui.components.CustomRatingBar
 @Composable
 fun UserHomeScreen(
     onCategoryClick: (String) -> Unit,
-    onServiceClick: (Int) -> Unit
+    onServiceClick: (Int) -> Unit,
+    onScanClick: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
     var showFilterSheet by remember { mutableStateOf(false) }
+    val primaryColor = MaterialTheme.colorScheme.primary
 
     if (showFilterSheet) {
         ModalBottomSheet(
@@ -49,62 +52,128 @@ fun UserHomeScreen(
         }
     }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        // Top Bar with Filter Button
-        HomeTopBar(onFilterClick = { showFilterSheet = true })
-        
-        // Banner
-        PromotionBanner()
-        
-        // Categories Grid
-        Text(
-            text = "Categories",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
-        )
-        
-        // UNIT I: LazyVerticalGrid for services
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
+        // Half-sided modern color accent
+        Surface(
             modifier = Modifier
-                .height(240.dp)
-                .padding(horizontal = 8.dp),
-            userScrollEnabled = false // Nested scroll handling
+                .fillMaxWidth()
+                .height(300.dp),
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+            shape = RoundedCornerShape(bottomEnd = 100.dp)
+        ) {}
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
-            items(DummyData.categories) { category ->
-                CategoryItem(
-                    name = category,
-                    icon = getCategoryIcon(category),
-                    onClick = { onCategoryClick(category) }
-                )
+            // Top Bar with Filter Button
+            HomeTopBar(onFilterClick = { showFilterSheet = true })
+            
+            // Fix-It AI Banner
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+                onClick = onScanClick
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = "Try Fix-It AI", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        Text(text = "Scan your home problem and get instant expert advice.", color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
+                    }
+                    Icon(
+                        Icons.Default.AutoAwesome,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
             }
-        }
-        
-        // Popular Services Horizontal Scroll
-        Text(
-            text = "Popular Services",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
-        )
-        
-        // UNIT I: Horizontal Scroll
-        LazyRow(
-            modifier = Modifier.padding(bottom = 16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(DummyData.services) { service ->
-                PopularServiceCard(service = service, onClick = { onServiceClick(service.id) })
+            
+            // Emergency SOS Banner
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFB91C1C)),
+                onClick = onSOSClick
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Default.Warning,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(32.dp)
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = "Emergency SOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        Text(text = "Gas leak? Water flood? Tap for instant expert response.", color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
+                    }
+                }
             }
+            
+            // Banner
+            PromotionBanner()
+            
+            // Categories Grid
+            Text(
+                text = "Categories",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp)
+            )
+            
+            // UNIT I: LazyVerticalGrid for services
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                modifier = Modifier
+                    .height(240.dp)
+                    .padding(horizontal = 8.dp),
+                userScrollEnabled = false // Nested scroll handling
+            ) {
+                items(DummyData.categories) { category ->
+                    CategoryItem(
+                        name = category,
+                        icon = getCategoryIcon(category),
+                        onClick = { onCategoryClick(category) }
+                    )
+                }
+            }
+            
+            // Popular Services Horizontal Scroll
+            Text(
+                text = "Popular Services",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp)
+            )
+            
+            // UNIT I: Horizontal Scroll
+            LazyRow(
+                modifier = Modifier.padding(bottom = 16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(DummyData.services) { service ->
+                    PopularServiceCard(service = service, onClick = { onServiceClick(service.id) })
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(80.dp)) // Padding for bottom nav
         }
-        
-        Spacer(modifier = Modifier.height(80.dp)) // Padding for bottom nav
     }
 }
 
@@ -218,23 +287,26 @@ fun CategoryItem(name: String, icon: ImageVector, onClick: () -> Unit) {
 @Composable
 fun PopularServiceCard(service: Service, onClick: () -> Unit) {
     CustomCard(
-        modifier = Modifier.width(200.dp),
+        modifier = Modifier.width(220.dp),
         onClick = onClick
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
-            Box(
+        Column {
+            AsyncImage(
+                model = service.imageUrl,
+                contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp)
-                    .background(Color.LightGray, RoundedCornerShape(12.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(service.icon, contentDescription = null, modifier = Modifier.size(48.dp))
+                    .height(120.dp)
+                    .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
+                contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                placeholder = androidx.compose.ui.res.painterResource(id = android.R.drawable.ic_menu_gallery),
+                error = androidx.compose.ui.res.painterResource(id = android.R.drawable.ic_menu_report_image)
+            )
+            Column(modifier = Modifier.padding(12.dp)) {
+                Text(text = service.name, fontWeight = FontWeight.Bold, maxLines = 1)
+                Text(text = service.price, fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)
+                CustomRatingBar(rating = service.rating)
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = service.name, fontWeight = FontWeight.Bold, maxLines = 1)
-            Text(text = service.price, fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)
-            CustomRatingBar(rating = service.rating)
         }
     }
 }

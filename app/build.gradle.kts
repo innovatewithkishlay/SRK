@@ -51,7 +51,11 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.compose.material.icons.extended)
+<<<<<<< HEAD
     implementation(libs.androidx.compose.runtime)
+=======
+    implementation(libs.coil.compose)
+>>>>>>> 94ab3e20e69b41f569bb56fd08996866bc1f4660
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
