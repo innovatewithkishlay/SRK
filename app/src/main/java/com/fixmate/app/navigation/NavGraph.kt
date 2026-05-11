@@ -17,6 +17,7 @@ import com.fixmate.app.ui.screens.user.UserDashboardContainer
 import com.fixmate.app.ui.screens.user.UserHomeScreen
 
 import androidx.navigation.compose.navigation
+import com.fixmate.app.ui.screens.RoleSelectionScreen
 import com.fixmate.app.ui.screens.auth.LoginScreen
 
 @Composable

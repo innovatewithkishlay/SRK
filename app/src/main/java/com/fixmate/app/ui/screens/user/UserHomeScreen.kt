@@ -31,6 +31,7 @@ import com.fixmate.app.ui.components.CustomRatingBar
  * UNIT I: LazyGrid, Horizontal Scroll, Nested Scroll (simulated with Column + ScrollState)
  */
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserHomeScreen(
     onCategoryClick: (String) -> Unit,
